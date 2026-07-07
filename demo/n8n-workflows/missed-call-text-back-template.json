@@ -1,0 +1,84 @@
+{
+  "name": "Lead Rescue Works - Missed Call Text Back Template",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "missed-call-text-back",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "WebhookMissedCall",
+      "name": "Webhook Missed Call",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "missed-call-text-back"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || $json;\nconst caller = body.caller || body.from || body.phone || '';\nconst business = body.businessName || '[Business Name]';\nconst event = {\n  receivedAt: new Date().toISOString(),\n  caller,\n  businessName: business,\n  source: body.source || 'missed_call_webhook',\n  callStatus: body.callStatus || 'missed',\n  ownerChannel: body.ownerChannel || 'owner_alert',\n  status: 'Needs callback',\n  nextAction: 'Reply or call back within 5 minutes'\n};\nevent.textBackMessage = `Sorry we missed your call. This is ${business}. Reply here with what you need help with and the best time to call you back. Reply STOP to opt out.`;\nevent.ownerAlert = `Missed call from ${caller || 'unknown caller'}. Text-back prepared. Next action: ${event.nextAction}.`;\nreturn [{ json: event }];"
+      },
+      "id": "PrepareTextBack",
+      "name": "Prepare Text Back",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, status: $json.status, textBackMessage: $json.textBackMessage, ownerAlert: $json.ownerAlert } }}",
+        "options": {}
+      },
+      "id": "RespondWithPreview",
+      "name": "Respond With Preview",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "content": "Production nodes to add after compliance/access check: send SMS through approved provider, send owner alert, write missed-call row to Sheet/CRM, add stale-call reminder."
+      },
+      "id": "ImplementationNote",
+      "name": "Implementation Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [500, 80]
+    }
+  ],
+  "connections": {
+    "Webhook Missed Call": {
+      "main": [
+        [
+          {
+            "node": "Prepare Text Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Text Back": {
+      "main": [
+        [
+          {
+            "node": "Respond With Preview",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "missed-call-text-back-template-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

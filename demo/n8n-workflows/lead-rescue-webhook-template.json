@@ -1,0 +1,84 @@
+{
+  "name": "Lead Rescue Works - Webhook Lead Intake Template",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "lead-rescue-intake",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "WebhookLeadIntake",
+      "name": "Webhook Lead Intake",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [240, 300],
+      "webhookId": "lead-rescue-intake"
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $json.body || $json;\nconst lead = {\n  receivedAt: new Date().toISOString(),\n  name: body.name || '',\n  email: body.email || '',\n  phone: body.phone || '',\n  service: body.service || body.service_needed || '',\n  message: body.message || '',\n  source: body.source || 'webhook',\n  status: 'New',\n  nextAction: 'Call within 5 minutes'\n};\nlead.ownerAlert = `New lead from ${lead.name || 'Unknown'} for ${lead.service || 'unknown service'}. Call ${lead.phone || 'missing phone'}.`;\nreturn [{ json: lead }];"
+      },
+      "id": "NormalizeLead",
+      "name": "Normalize Lead",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, status: $json.status, nextAction: $json.nextAction } }}",
+        "options": {}
+      },
+      "id": "RespondToLead",
+      "name": "Respond To Lead",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [760, 300]
+    },
+    {
+      "parameters": {
+        "content": "Next production nodes: write to Sheet/Airtable/CRM, send Slack/email alert, and add stale lead reminder."
+      },
+      "id": "ImplementationNote",
+      "name": "Implementation Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [500, 80]
+    }
+  ],
+  "connections": {
+    "Webhook Lead Intake": {
+      "main": [
+        [
+          {
+            "node": "Normalize Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalize Lead": {
+      "main": [
+        [
+          {
+            "node": "Respond To Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "lead-rescue-template-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

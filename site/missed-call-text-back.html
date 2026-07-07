@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Missed-Call Text-Back Calculator | Lead Rescue Works</title>
+  <meta name="description" content="Estimate missed-call pipeline risk and generate a small text-back workflow plan for a local service business.">
+  <style>
+    :root {
+      --paper: #f6efe2;
+      --ink: #17221d;
+      --muted: #5b675f;
+      --line: #d4c7b4;
+      --green: #23724f;
+      --blue: #235d7c;
+      --amber: #c36d26;
+      --red: #9f3f32;
+      --panel: #fffaf1;
+      --white: #fffef9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: clamp(22px, 5vw, 72px);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: clamp(24px, 4vw, 52px);
+      font-weight: 900;
+    }
+
+    nav a {
+      text-decoration: none;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--ink);
+      background: var(--green);
+      color: var(--white);
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 900;
+    }
+
+    .tool {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.88fr) minmax(320px, 1.12fr);
+      gap: clamp(24px, 5vw, 68px);
+      align-items: start;
+    }
+
+    .intro {
+      position: sticky;
+      top: 24px;
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 6px 10px;
+      border: 1px solid var(--ink);
+      background: #efd7a7;
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      margin: 18px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 10ch;
+      font-size: clamp(3rem, 7vw, 6.6rem);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.8rem);
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .lead {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(1.04rem, 1.8vw, 1.26rem);
+    }
+
+    .source-note {
+      max-width: 640px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .workspace {
+      border: 2px solid var(--ink);
+      background: var(--panel);
+      box-shadow: 12px 12px 0 #2e3933;
+    }
+
+    .workspace header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 13px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: #e4d4bb;
+      font-weight: 900;
+    }
+
+    .form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      padding: 16px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--ink);
+      padding: 10px 12px;
+      background: var(--white);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .result {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      border-top: 2px solid var(--ink);
+    }
+
+    .metric {
+      min-height: 156px;
+      padding: 18px;
+      border-right: 1px solid var(--ink);
+      background: #efd7a7;
+    }
+
+    .metric:last-child {
+      border-right: 0;
+      background: #dce9df;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-weight: 850;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 5vw, 4.1rem);
+      line-height: 1;
+    }
+
+    .report {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+      border-top: 2px solid var(--ink);
+      background: var(--white);
+    }
+
+    .report-output {
+      min-height: 170px;
+      margin: 0;
+      padding: 14px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      background: #f8f1e6;
+      white-space: pre-wrap;
+      font: 0.92rem/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button,
+    .button {
+      min-height: 44px;
+      border: 2px solid var(--ink);
+      padding: 10px 14px;
+      background: var(--amber);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    button.secondary,
+    .button.secondary {
+      background: var(--white);
+      box-shadow: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: clamp(36px, 6vw, 84px);
+    }
+
+    .tile {
+      min-height: 184px;
+      padding: 18px;
+      border-top: 2px solid var(--ink);
+      background: color-mix(in srgb, var(--white) 78%, var(--paper));
+    }
+
+    .tile p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .map {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: clamp(32px, 5vw, 72px);
+      border: 2px solid var(--ink);
+      background: var(--white);
+    }
+
+    .map div {
+      min-height: 132px;
+      padding: 16px;
+      border-right: 1px solid var(--ink);
+    }
+
+    .map div:last-child {
+      border-right: 0;
+    }
+
+    .map small {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .map b {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .map span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .sources {
+      margin-top: clamp(34px, 6vw, 82px);
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .sources ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    @media (max-width: 880px) {
+      .tool,
+      .form,
+      .result,
+      .grid,
+      .map {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        position: static;
+      }
+
+      .metric,
+      .map div {
+        border-right: 0;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .metric:last-child,
+      .map div:last-child {
+        border-bottom: 0;
+      }
+
+      nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav>
+      <span class="brand"><span class="mark">LR</span>Lead Rescue Works</span>
+      <a href="./index.html">Offer page</a>
+    </nav>
+
+    <section class="tool" aria-label="Missed-call calculator">
+      <div class="intro">
+        <div class="eyebrow">Free diagnostic tool</div>
+        <h1>Missed-call leak calculator.</h1>
+        <p class="lead">Estimate the monthly pipeline at risk when callers go unanswered, then generate a small text-back workflow plan you can attach to a proposal or use in a sales call.</p>
+        <p class="source-note">This is an estimate, not a revenue guarantee. It uses your inputs only and avoids industry-wide claims that are hard to verify for one business.</p>
+        <div class="actions">
+          <a class="button" href="#calculator">Use the calculator</a>
+          <a class="button secondary" href="./proof.html">See proof packet</a>
+        </div>
+      </div>
+
+      <div class="workspace" id="calculator">
+        <header>
+          <span>Missed-call diagnostic</span>
+          <span>No account required</span>
+        </header>
+        <div class="form">
+          <label>
+            Missed calls per week
+            <input id="missed" type="number" min="0" value="6">
+          </label>
+          <label>
+            Average job value
+            <input id="value" type="number" min="0" value="950">
+          </label>
+          <label>
+            Close rate if reached %
+            <input id="close" type="number" min="0" max="100" value="22">
+          </label>
+          <label>
+            Recovery rate after text %
+            <input id="recover" type="number" min="0" max="100" value="35">
+          </label>
+          <label>
+            Phone or CRM stack
+            <select id="stack">
+              <option>GoHighLevel</option>
+              <option>OpenPhone + Zapier</option>
+              <option>Aircall + webhook</option>
+              <option>Twilio / custom</option>
+              <option>Unknown phone system</option>
+            </select>
+          </label>
+          <label>
+            Lead destination
+            <select id="destination">
+              <option>Google Sheet tracker</option>
+              <option>GoHighLevel pipeline</option>
+              <option>Airtable base</option>
+              <option>HubSpot / CRM</option>
+              <option>Email or Slack alert only</option>
+            </select>
+          </label>
+        </div>
+        <div class="result">
+          <div class="metric">
+            <span>Monthly pipeline at risk</span>
+            <strong id="risk">$5,429</strong>
+          </div>
+          <div class="metric">
+            <span>Potential recovered pipeline</span>
+            <strong id="recovered">$1,900</strong>
+          </div>
+        </div>
+        <div class="report">
+          <h3>Generated audit note</h3>
+          <pre class="report-output" id="report"></pre>
+          <div class="actions">
+            <button id="copy" type="button">Copy report</button>
+            <button id="download" class="secondary" type="button">Download .txt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map" aria-label="Missed-call workflow map">
+      <div><small>01</small><b>Detect</b><span>Missed call is captured from GHL, OpenPhone, Aircall, Twilio, or the current phone provider.</span></div>
+      <div><small>02</small><b>Text back</b><span>Caller receives a short reply confirming the business saw the call and will help.</span></div>
+      <div><small>03</small><b>Alert</b><span>Owner or office team receives caller, timestamp, source, and next action.</span></div>
+      <div><small>04</small><b>Track</b><span>The event lands in a Sheet, CRM, Airtable, or pipeline with status.</span></div>
+      <div><small>05</small><b>Follow up</b><span>Unresolved callers surface again instead of disappearing into voicemail.</span></div>
+    </section>
+
+    <section class="grid" aria-label="Implementation notes">
+      <div class="tile">
+        <h3>Small first setup</h3>
+        <p>Start with one number, one text template, one alert, and one tracker. Add AI routing only after the base loop works.</p>
+      </div>
+      <div class="tile">
+        <h3>Compliance check</h3>
+        <p>Business SMS may require registration, consent, opt-out language, and provider-specific rules. Do this before sending live texts.</p>
+      </div>
+      <div class="tile">
+        <h3>Proposal angle</h3>
+        <p>Sell a 24-hour diagnostic first: confirm the call source, trigger, reply path, alert, log, and stale-call follow-up.</p>
+      </div>
+    </section>
+
+    <section class="sources">
+      <strong>Research notes used for positioning.</strong>
+      <ul>
+        <li><a href="https://help.gohighlevel.com/support/solutions/articles/48001239140-where-and-how-to-configure-the-missed-call-text-back-feature">GoHighLevel documents a built-in missed-call text-back feature and setup flow.</a></li>
+        <li><a href="https://zapier.com/templates/details/734c2ec14923cac21ee9e5a42808ad38fe20fa9ed6562c9648ca6c3989a12bee">Zapier has a missed-call follow-up template for OpenPhone.</a></li>
+        <li><a href="https://textbolt.com/blog/10dlc-compliance/">Current business SMS guidance emphasizes 10DLC registration, opt-in proof, and opt-out handling.</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    const inputs = [...document.querySelectorAll("input, select")];
+    const risk = document.querySelector("#risk");
+    const recovered = document.querySelector("#recovered");
+    const report = document.querySelector("#report");
+    const copy = document.querySelector("#copy");
+    const download = document.querySelector("#download");
+
+    function number(id) {
+      return Number(document.querySelector(`#${id}`).value || 0);
+    }
+
+    function routeFor(stack) {
+      if (stack.includes("GoHighLevel")) return "Use native missed-call text-back first, then add workflow logging if pipeline visibility is needed.";
+      if (stack.includes("OpenPhone")) return "Use the phone event as the trigger, send SMS through the phone provider, then log the event through Zapier.";
+      if (stack.includes("Aircall")) return "Use Aircall webhook or integration event, then route the SMS and alert through Zapier or Make.";
+      if (stack.includes("Twilio")) return "Use call status webhooks and send the text through the same controlled number after SMS compliance is confirmed.";
+      return "Audit the current phone system first, then choose native text-back, Zapier/Make, or Twilio based on available triggers.";
+    }
+
+    function update() {
+      const missed = number("missed");
+      const value = number("value");
+      const close = number("close") / 100;
+      const recover = number("recover") / 100;
+      const stack = document.querySelector("#stack").value;
+      const destination = document.querySelector("#destination").value;
+      const monthlyRisk = missed * 4.33 * value * close;
+      const recoverable = monthlyRisk * recover;
+
+      risk.textContent = money.format(monthlyRisk);
+      recovered.textContent = money.format(recoverable);
+      report.textContent = [
+        "Missed-call diagnostic note",
+        "",
+        `Inputs: ${missed} missed calls/week, ${money.format(value)} average job value, ${Math.round(close * 100)}% close rate, ${Math.round(recover * 100)}% recovery assumption.`,
+        `Estimated monthly pipeline at risk: ${money.format(monthlyRisk)}.`,
+        `Potential recovered pipeline if text-back saves that share: ${money.format(recoverable)}.`,
+        "",
+        `Stack: ${stack}.`,
+        `Recommended route: ${routeFor(stack)}`,
+        `Lead destination: ${destination}.`,
+        "",
+        "Starter text:",
+        "Sorry we missed your call. This is [Business Name]. Reply here with what you need help with and the best time to call you back.",
+        "",
+        "First setup scope: one number, one missed-call trigger, one text reply, one owner alert, one tracking destination, one stale-call follow-up rule.",
+        "Guardrail: confirm SMS registration, consent, opt-out wording, and provider rules before sending live texts.",
+      ].join("\n");
+    }
+
+    copy.addEventListener("click", async () => {
+      await navigator.clipboard.writeText(report.textContent);
+      copy.textContent = "Copied";
+      setTimeout(() => { copy.textContent = "Copy report"; }, 1400);
+    });
+
+    download.addEventListener("click", () => {
+      const blob = new Blob([report.textContent], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "missed-call-diagnostic.txt";
+      link.click();
+      URL.revokeObjectURL(url);
+    });
+
+    inputs.forEach((input) => input.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>

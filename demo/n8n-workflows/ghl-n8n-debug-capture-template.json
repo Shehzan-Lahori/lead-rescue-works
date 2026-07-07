@@ -1,0 +1,84 @@
+{
+  "name": "Lead Rescue Works - GHL to n8n Debug Capture Template",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "ghl-debug-capture",
+        "httpMethod": "POST",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "GhlWebhook",
+      "name": "GHL Webhook Test Capture",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 320],
+      "webhookId": "ghl-debug-capture"
+    },
+    {
+      "parameters": {
+        "jsCode": "const received = $json.body || $json;\nconst required = ['name', 'email', 'phone'];\nconst missing = required.filter((key) => !received[key]);\nreturn [{\n  json: {\n    receivedAt: new Date().toISOString(),\n    missingFields: missing,\n    hasRequiredFields: missing.length === 0,\n    rawPayload: received,\n    debugNote: missing.length ? `Missing: ${missing.join(', ')}` : 'Payload includes required lead fields'\n  }\n}];"
+      },
+      "id": "InspectPayload",
+      "name": "Inspect Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [500, 320]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { ok: true, hasRequiredFields: $json.hasRequiredFields, missingFields: $json.missingFields, debugNote: $json.debugNote } }}",
+        "options": {}
+      },
+      "id": "DebugResponse",
+      "name": "Debug Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [760, 320]
+    },
+    {
+      "parameters": {
+        "content": "Use this before changing production logic: point a GHL test webhook here, submit controlled test leads, and compare rawPayload to expected fields."
+      },
+      "id": "DebugNote",
+      "name": "Debug Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [500, 90]
+    }
+  ],
+  "connections": {
+    "GHL Webhook Test Capture": {
+      "main": [
+        [
+          {
+            "node": "Inspect Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inspect Payload": {
+      "main": [
+        [
+          {
+            "node": "Debug Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ghl-debug-capture-template-v1",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": []
+}

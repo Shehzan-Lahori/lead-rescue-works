@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lead Rescue Works</title>
+  <style>
+    :root {
+      --paper: #f7f0e4;
+      --ink: #1c2520;
+      --muted: #5c675f;
+      --line: #d9cbb8;
+      --green: #277a57;
+      --blue: #276b8f;
+      --amber: #c46f27;
+      --red: #a94332;
+      --white: #fffaf1;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      min-height: 100vh;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(320px, 1.08fr);
+      gap: clamp(28px, 5vw, 72px);
+      align-items: center;
+      min-height: 92vh;
+      padding: clamp(28px, 6vw, 84px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 6px 10px;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0;
+      text-transform: uppercase;
+      background: #efd7a7;
+    }
+
+    h1 {
+      max-width: 11ch;
+      margin: 22px 0 20px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      line-height: 0.92;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 700px;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.8vw, 1.32rem);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .brandline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 28px;
+      font-weight: 900;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--ink);
+      background: var(--green);
+      color: var(--white);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.25rem;
+    }
+
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border: 2px solid var(--ink);
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 800;
+      background: var(--amber);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    a.button.secondary {
+      background: var(--white);
+      box-shadow: none;
+    }
+
+    .note {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .diagnostic {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      max-width: 620px;
+      margin-top: 22px;
+      padding: 14px;
+      border: 2px solid var(--ink);
+      background: #fffdf7;
+      box-shadow: 6px 6px 0 #2f3a34;
+    }
+
+    .diagnostic strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .diagnostic span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .stamp {
+      display: grid;
+      place-items: center;
+      min-height: 76px;
+      border: 1px solid var(--ink);
+      background: var(--green);
+      color: var(--white);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .workbench {
+      border: 2px solid var(--ink);
+      background: var(--white);
+      box-shadow: 12px 12px 0 #2f3a34;
+    }
+
+    .workbench header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: #e6d7bd;
+      font-weight: 900;
+    }
+
+    .panel {
+      display: grid;
+      gap: 14px;
+      padding: 16px;
+    }
+
+    .lead-row {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 112px;
+      gap: 12px;
+      align-items: center;
+      padding: 13px;
+      border: 1px solid var(--line);
+      background: #fffdf7;
+    }
+
+    .tag {
+      width: fit-content;
+      padding: 4px 8px;
+      color: #fffdf7;
+      background: var(--green);
+      font-size: 0.74rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .source {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .time {
+      color: var(--blue);
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .step {
+      min-height: 104px;
+      padding: 12px;
+      border: 1px solid var(--ink);
+      background: #f2eadb;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.92rem;
+    }
+
+    .step span {
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .section {
+      padding: clamp(34px, 6vw, 80px) clamp(24px, 6vw, 84px);
+    }
+
+    .section h2 {
+      margin: 0 0 18px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2rem, 4vw, 4rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .calculator {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.7fr);
+      gap: 22px;
+      align-items: start;
+      margin-top: 26px;
+    }
+
+    .calc-form {
+      display: grid;
+      gap: 14px;
+      padding: 20px;
+      border: 2px solid var(--ink);
+      background: var(--white);
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    input {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--ink);
+      padding: 10px 12px;
+      background: #fffdf7;
+      color: var(--ink);
+      font: inherit;
+      font-weight: 700;
+    }
+
+    .estimate {
+      padding: 22px;
+      border: 2px solid var(--ink);
+      background: #efd7a7;
+    }
+
+    .estimate strong {
+      display: block;
+      margin-top: 6px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.2rem, 5vw, 4.4rem);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .item {
+      padding: 20px;
+      border-top: 2px solid var(--ink);
+      background: color-mix(in srgb, var(--white) 70%, var(--paper));
+    }
+
+    .item h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .item p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .rail {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0;
+      margin: 28px 0;
+      border: 2px solid var(--ink);
+      background: var(--white);
+    }
+
+    .node {
+      min-height: 128px;
+      padding: 16px;
+      border-right: 1px solid var(--ink);
+    }
+
+    .node:last-child {
+      border-right: 0;
+    }
+
+    .node small {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .node b {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .node span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .proof {
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--ink);
+      background: #fffdf7;
+    }
+
+    .proof b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+
+    .proof span {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .policy {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.8fr);
+      gap: 22px;
+      align-items: start;
+      margin-top: 28px;
+    }
+
+    .policy-list {
+      margin: 0;
+      padding: 22px 22px 22px 42px;
+      border: 2px solid var(--ink);
+      background: #f2eadb;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 28px clamp(24px, 6vw, 84px);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .grid,
+      .flow,
+      .calculator,
+      .strip,
+      .policy,
+      .rail,
+      .diagnostic {
+        grid-template-columns: 1fr;
+      }
+
+      .node {
+        border-right: 0;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .node:last-child {
+        border-bottom: 0;
+      }
+
+      .lead-row {
+        grid-template-columns: 1fr;
+      }
+
+      .time {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div>
+        <div class="brandline">
+          <span class="mark">LR</span>
+          <span>Lead Rescue Works</span>
+        </div>
+        <div class="eyebrow">For contractors with inbound leads</div>
+        <h1>Stop losing leads on the job.</h1>
+        <p class="lead">Lead Rescue Works installs instant follow-up, owner alerts, and a simple tracker so quote requests do not sit in voicemail, inboxes, or memory.</p>
+        <div class="actions">
+          <a class="button" href="./proof.html">View the proof packet</a>
+          <a class="button secondary" href="#install">See the install</a>
+          <a class="button secondary" href="./missed-call-text-back.html">Missed-call calculator</a>
+        </div>
+        <div class="diagnostic" aria-label="24 hour diagnostic offer">
+          <div class="stamp">24h</div>
+          <div>
+            <strong>First paid wedge: workflow diagnostic.</strong>
+            <span>Trigger, payload, field mapping, alert path, and the smallest fix. Built for GHL, n8n, forms, Sheets, Airtable, and CRM handoffs.</span>
+          </div>
+        </div>
+        <p class="note">Public-use checklist: use platform messages or an approved business contact path. Do not send cold outreach until sender identity and compliance are ready.</p>
+      </div>
+
+      <div class="workbench" aria-label="Lead rescue workflow preview">
+        <header>
+          <span>Lead Rescue Console</span>
+          <span>03:42 response</span>
+        </header>
+        <div class="panel">
+          <div class="lead-row">
+            <div class="tag">New</div>
+            <div>
+              <strong>Roof leak estimate</strong>
+              <div class="source">Web form · storm damage · Phoenix</div>
+            </div>
+            <div class="time">Now</div>
+          </div>
+          <div class="flow">
+            <div class="step">
+              <strong>Capture</strong>
+              <span>Lead enters from form, missed call, or ad.</span>
+            </div>
+            <div class="step">
+              <strong>Reply</strong>
+              <span>Lead gets a fast confirmation message.</span>
+            </div>
+            <div class="step">
+              <strong>Alert</strong>
+              <span>Owner gets the job details and next action.</span>
+            </div>
+            <div class="step">
+              <strong>Track</strong>
+              <span>Nothing disappears without a status.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="install">
+      <h2>One narrow fix first.</h2>
+      <div class="rail" aria-label="Lead rescue workflow">
+        <div class="node"><small>01</small><b>Capture</b><span>Form, ad, email, webhook, or missed-call lead enters.</span></div>
+        <div class="node"><small>02</small><b>Inspect</b><span>Check payload shape, required fields, and missing data.</span></div>
+        <div class="node"><small>03</small><b>Route</b><span>Send the record to CRM, Sheet, Airtable, or pipeline.</span></div>
+        <div class="node"><small>04</small><b>Alert</b><span>Notify owner or team with enough context to act.</span></div>
+        <div class="node"><small>05</small><b>Track</b><span>Leave status, next action, and stale-lead visibility.</span></div>
+      </div>
+      <div class="grid">
+        <div class="item">
+          <h3>$149 Lead-Leak Audit</h3>
+          <p>Find where forms, calls, and follow-ups are leaking revenue.</p>
+        </div>
+        <div class="item">
+          <h3>$499-$1,500 Setup</h3>
+          <p>Install one lead source, instant reply, owner alert, and tracker.</p>
+        </div>
+        <div class="item">
+          <h3>$299-$799 Monthly Rescue</h3>
+          <p>Monitor, fix, report, and improve the follow-up system.</p>
+        </div>
+      </div>
+
+      <div class="strip" aria-label="Business proof and operating standards">
+        <div class="proof">
+          <b>Small first install</b>
+          <span>One lead source, one fast reply, one owner alert, one tracker.</span>
+        </div>
+        <div class="proof">
+          <b>No fake case studies</b>
+          <span>First clients get honest setup work, not inflated claims.</span>
+        </div>
+        <div class="proof">
+          <b>Audit before automation</b>
+          <span>Every setup starts by mapping where the lead currently goes.</span>
+        </div>
+        <div class="proof">
+          <b>Built for handoff</b>
+          <span>Each workflow ships with a simple operating note your team can read.</span>
+        </div>
+      </div>
+
+      <div class="calculator" id="audit">
+        <div>
+          <h2>Show the leak in dollars.</h2>
+          <p class="lead">Use conservative numbers on a sales call. The point is not perfect forecasting; it is showing why one missed lead can cost more than the setup.</p>
+        </div>
+        <div class="calc-form">
+          <label>
+            Missed leads per week
+            <input id="missed" type="number" min="0" value="5">
+          </label>
+          <label>
+            Average job value
+            <input id="value" type="number" min="0" value="1200">
+          </label>
+          <label>
+            Close rate %
+            <input id="close" type="number" min="0" max="100" value="25">
+          </label>
+          <div class="estimate">
+            Estimated monthly pipeline at risk
+            <strong id="result">$6,000</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>What the audit checks.</h2>
+      <div class="policy">
+        <p class="lead">The first sale is a practical lead-leak audit. It checks whether real quote requests are captured, acknowledged, routed, tracked, and followed up without requiring a full CRM migration.</p>
+        <ul class="policy-list">
+          <li>Which forms, calls, ads, and inboxes create leads.</li>
+          <li>Who sees each new lead first.</li>
+          <li>How fast the lead gets a human or automated response.</li>
+          <li>Where stale leads are visible.</li>
+          <li>What breaks after hours, weekends, and busy job days.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer>
+    Lead Rescue Works. Demo page only until the business inbox and compliant sender footer are live.
+  </footer>
+  <script>
+    const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+    const inputs = [...document.querySelectorAll("input")];
+    const result = document.querySelector("#result");
+
+    function update() {
+      const missed = Number(document.querySelector("#missed").value || 0);
+      const value = Number(document.querySelector("#value").value || 0);
+      const close = Number(document.querySelector("#close").value || 0) / 100;
+      result.textContent = money.format(missed * value * close * 4);
+    }
+
+    inputs.forEach((input) => input.addEventListener("input", update));
+    update();
+  </script>
+</body>
+</html>
