@@ -68,7 +68,7 @@
     },
     {
       "parameters": {
-        "content": "Intentional demo flaw: both IF branches can reach Send Owner Alert."
+        "content": "Intentional demo flaw: the webhook fans out directly to Send Owner Alert and through the normalized lead branch."
       },
       "id": "RiskNote",
       "name": "Risk Note",
@@ -85,6 +85,11 @@
             "node": "Check Event Type",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Send Owner Alert",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -94,13 +99,6 @@
         [
           {
             "node": "Normalize Event",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Send Owner Alert",
             "type": "main",
             "index": 0
           }
