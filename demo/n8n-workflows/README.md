@@ -8,6 +8,7 @@ These are not client-ready production workflows. They are starting structures sh
 
 - `lead-rescue-webhook-template.json`: generic webhook lead intake flow.
 - `ghl-n8n-debug-capture-template.json`: GHL form webhook debugging capture flow.
+- `duplicate-trigger-risk-sample.json`: intentionally flawed duplicate-trigger workflow used by the analyzer/report demo.
 
 ## How To Use
 
@@ -19,6 +20,12 @@ These are not client-ready production workflows. They are starting structures sh
 ## Notes
 
 n8n supports workflow JSON import/export. Webhook workflows can return data using a Respond to Webhook node when the Webhook node is configured to respond through that node.
+
+Duplicate-trigger debugging proof:
+
+```bash
+node scripts/analyze-n8n-workflow.mjs demo/n8n-workflows/duplicate-trigger-risk-sample.json --out demo/output/n8n-duplicate-trigger-diagnostic-report.md
+```
 
 Sources:
 

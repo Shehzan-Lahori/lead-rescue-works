@@ -22,13 +22,15 @@ Lead Rescue Works can structure small lead-response workflows around four output
 - `demo/output/owner-alert.txt`: owner/team alert copy
 - `demo/output/lead-record.json`: normalized lead record
 - `demo/ghl-n8n-debug-checklist.md`: audit checklist for broken GHL/n8n lead workflows
+- `demo/output/n8n-duplicate-trigger-diagnostic-report.md`: sample report showing duplicate-trigger/path analysis
+- `scripts/analyze-n8n-workflow.mjs`: zero-dependency static analyzer for n8n workflow JSON
 
 ## How To Present It
 
 Short message:
 
 ```text
-I have a small lead workflow demo that shows the structure I use: capture -> normalize -> alert -> track. For debugging jobs, I also use a GHL/n8n checklist that traces trigger, payload, mapping, and failure handling.
+I have a small lead workflow demo that shows the structure I use: capture -> normalize -> alert -> track. For debugging jobs, I also use a GHL/n8n checklist and a duplicate-trigger diagnostic report that traces trigger, payload, branching, retries, and failure handling.
 ```
 
 ## What Not To Claim
