@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Swiss Quote Agent Prototype | Lead Rescue Works</title>
+  <meta name="description" content="A small exact-catalog matching prototype for an n8n AI quoting agent in plumbing and HVAC.">
+  <style>
+    :root {
+      --paper: #f6efe2;
+      --ink: #17221d;
+      --muted: #5b675f;
+      --line: #d7c9b6;
+      --green: #23724f;
+      --blue: #285f7d;
+      --amber: #c46f27;
+      --red: #9b3f34;
+      --panel: #fffaf1;
+      --white: #fffef9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+
+    main {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: clamp(22px, 5vw, 72px);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: clamp(26px, 5vw, 72px);
+      font-weight: 900;
+    }
+
+    nav a {
+      text-decoration: none;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .brand {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .mark {
+      display: inline-grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border: 2px solid var(--ink);
+      background: var(--green);
+      color: var(--white);
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 900;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(300px, 0.88fr) minmax(340px, 1.12fr);
+      gap: clamp(24px, 5vw, 68px);
+      align-items: start;
+      margin-bottom: clamp(34px, 6vw, 76px);
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 6px 10px;
+      border: 1px solid var(--ink);
+      background: #efd7a7;
+      font-size: 0.78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      margin: 18px 0;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 10ch;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+    }
+
+    h2 { font-size: clamp(2rem, 4vw, 3.5rem); }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    .lead {
+      max-width: 660px;
+      color: var(--muted);
+      font-size: clamp(1.04rem, 1.8vw, 1.24rem);
+    }
+
+    .proof {
+      display: grid;
+      gap: 14px;
+      margin-top: 24px;
+      padding: 18px;
+      border: 2px solid var(--ink);
+      background: var(--panel);
+      box-shadow: 8px 8px 0 #2f3a34;
+    }
+
+    .proof div {
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .proof div:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .proof strong { color: var(--blue); }
+
+    .lab {
+      border: 2px solid var(--ink);
+      background: var(--white);
+      box-shadow: 12px 12px 0 #2f3a34;
+    }
+
+    .lab header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--ink);
+      background: #e6d7bd;
+      font-weight: 900;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 138px;
+      resize: vertical;
+      border: 0;
+      border-bottom: 2px solid var(--ink);
+      padding: 18px;
+      background: var(--panel);
+      color: var(--ink);
+      font: 1rem/1.5 "Avenir Next", "Segoe UI", sans-serif;
+    }
+
+    button {
+      margin: 16px 18px 4px;
+      min-height: 44px;
+      border: 2px solid var(--ink);
+      background: var(--green);
+      color: var(--white);
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 2px;
+    }
+
+    .result {
+      display: grid;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    th,
+    td {
+      padding: 9px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--blue);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+    }
+
+    .status {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px;
+      border-top: 2px solid var(--ink);
+      background: #f2eadb;
+    }
+
+    .metric b {
+      display: block;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.85rem;
+      line-height: 1;
+    }
+
+    .missing {
+      padding: 14px;
+      border: 2px solid var(--red);
+      background: #fff3ed;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .flow span {
+      min-height: 76px;
+      padding: 10px;
+      border: 1px solid var(--ink);
+      background: color-mix(in srgb, var(--white) 80%, var(--paper));
+      font-size: 0.84rem;
+      font-weight: 800;
+    }
+
+    .files {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .files a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 40px;
+      padding: 8px 11px;
+      border: 1px solid var(--ink);
+      background: var(--panel);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .quiet { color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .status { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      main { padding: 18px; }
+      nav { align-items: flex-start; flex-direction: column; }
+      .proof div { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      table { font-size: 0.84rem; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <nav>
+      <span class="brand"><span class="mark">LR</span> Lead Rescue Works</span>
+      <a href="./proof.html">Proof packet</a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Exact catalog quote prototype</div>
+        <h1>Fail closed before quoting.</h1>
+        <p class="lead">A small proof for a plumbing/HVAC AI quoting agent: free-text request in, exact catalog references out, unknown products flagged for human review instead of invented prices.</p>
+
+        <div class="proof">
+          <div><strong>Rule</strong><span>Only exact reference, name, or approved alias matches become quote lines.</span></div>
+          <div><strong>Math</strong><span>Materials + 15% margin, labor at CHF 95/h, CHF 45 travel, Swiss VAT at 8.1%.</span></div>
+          <div><strong>n8n fit</strong><span>Webhook, catalog lookup, IF review branch, quote generation, CRM/email handoff, audit log.</span></div>
+        </div>
+      </div>
+
+      <div class="lab">
+        <header>
+          <span>Prototype runner</span>
+          <span class="quiet">sample catalog</span>
+        </header>
+        <textarea id="request">Client a Lausanne: remplacement d'un robinet lavabo Grohe Eurosmart avec siphon lavabo, flexible inox 3/8 et cartouche thermostatique. Prevoir 2 heures de main d'oeuvre.</textarea>
+        <button type="button" id="run">Run exact-match quote</button>
+        <div class="result" id="result"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Workflow Shape</h2>
+      <p class="lead">The production version belongs inside n8n, with the deterministic catalog validation layer before PDF generation.</p>
+      <div class="flow">
+        <span>Webhook or form trigger</span>
+        <span>Normalize French request</span>
+        <span>Exact catalog lookup</span>
+        <span>Missing item review branch</span>
+        <span>Quote calculation</span>
+        <span>HTML/PDF generation</span>
+        <span>CRM/email handoff plus audit log</span>
+      </div>
+
+      <div class="files">
+        <a href="../demo/output/swiss-quote-agent/quote-output.md">Generated quote report</a>
+        <a href="../demo/output/swiss-quote-agent/quote-output.json">Structured quote JSON</a>
+        <a href="../demo/swiss-quote-agent/catalog-sample.json">Sample catalog</a>
+        <a href="../scripts/generate-swiss-quote-prototype.mjs">Prototype script</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const catalog = {
+      marginRate: 0.15,
+      laborRateChf: 95,
+      travelFeeChf: 45,
+      vatRate: 0.081,
+      items: [
+        { supplier: "Getaz Miauton", reference: "GM-GROHE-23875000", name: "Mitigeur lavabo Grohe Eurosmart S", unitPriceChf: 118.4, aliases: ["grohe eurosmart", "mitigeur lavabo", "robinet lavabo grohe", "lavabo grohe"] },
+        { supplier: "Sanitas Troesch", reference: "ST-SIPHON-114-CH", name: "Siphon lavabo chrome 1 1/4", unitPriceChf: 34.9, aliases: ["siphon lavabo", "siphon chrome", "siphon 1 1/4"] },
+        { supplier: "Nussbaum", reference: "NB-FLEX-38-50", name: "Flexible inox 3/8 50 cm", unitPriceChf: 22.6, aliases: ["flexible inox", "flexible 3/8", "raccord flexible", "flexible lavabo"] },
+        { supplier: "Nussbaum", reference: "NB-VANNE-12", name: "Vanne d'arret 1/2", unitPriceChf: 18.2, aliases: ["vanne d'arret", "robinet d'arret", "arret 1/2"] }
+      ]
+    };
+
+    const money = (value) => Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+    const norm = (text) => text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9/.\s-]/g, " ").replace(/\s+/g, " ").trim();
+
+    function laborHours(request) {
+      const match = norm(request).match(/(\d{1,2}(?:[.,]\d{1,2})?)\s*(?:h|heure|heures|hour|hours)/);
+      return match ? Number(match[1].replace(",", ".")) : 1;
+    }
+
+    function runQuote() {
+      const request = document.querySelector("#request").value;
+      const normalized = norm(request);
+      const lines = [];
+
+      for (const item of catalog.items) {
+        const alias = [item.reference, item.name, ...item.aliases].map(norm).find((candidate) => normalized.includes(candidate));
+        if (!alias) continue;
+        const qty = 1;
+        const subtotal = money(qty * item.unitPriceChf);
+        lines.push({ ...item, quantity: qty, subtotal, withMargin: money(subtotal * (1 + catalog.marginRate)) });
+      }
+
+      const missing = normalized.includes("cartouche thermostatique") || normalized.includes("thermostatique") ? ["cartouche thermostatique"] : [];
+      const hours = laborHours(request);
+      const materials = money(lines.reduce((sum, line) => sum + line.subtotal, 0));
+      const materialsWithMargin = money(lines.reduce((sum, line) => sum + line.withMargin, 0));
+      const labor = money(hours * catalog.laborRateChf);
+      const preVat = money(materialsWithMargin + labor + catalog.travelFeeChf);
+      const vat = money(preVat * catalog.vatRate);
+      const total = money(preVat + vat);
+
+      document.querySelector("#result").innerHTML = `
+        <div class="status">
+          <div class="metric"><span>Exact matches</span><b>${lines.length}</b></div>
+          <div class="metric"><span>Human review</span><b>${missing.length}</b></div>
+          <div class="metric"><span>Total</span><b>CHF ${total.toFixed(2)}</b></div>
+        </div>
+        <table>
+          <thead><tr><th>Supplier</th><th>Reference</th><th>Product</th><th>CHF</th></tr></thead>
+          <tbody>${lines.map((line) => `<tr><td>${line.supplier}</td><td>${line.reference}</td><td>${line.name}</td><td>${line.withMargin.toFixed(2)}</td></tr>`).join("") || '<tr><td colspan="4">No exact catalog matches.</td></tr>'}</tbody>
+        </table>
+        <div class="missing"><strong>Missing items:</strong> ${missing.length ? missing.join(", ") : "none"}. Unknown items are not priced.</div>
+        <p class="quiet">Totals include CHF ${labor.toFixed(2)} labor, CHF ${catalog.travelFeeChf.toFixed(2)} travel, and CHF ${vat.toFixed(2)} VAT.</p>
+      `;
+    }
+
+    document.querySelector("#run").addEventListener("click", runQuote);
+    runQuote();
+  </script>
+</body>
+</html>

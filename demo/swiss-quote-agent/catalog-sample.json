@@ -1,0 +1,38 @@
+{
+  "currency": "CHF",
+  "marginRate": 0.15,
+  "laborRateChf": 95,
+  "travelFeeChf": 45,
+  "vatRate": 0.081,
+  "supplierNote": "Sample-only catalog for prototype validation. Not real supplier pricing.",
+  "items": [
+    {
+      "supplier": "Getaz Miauton",
+      "reference": "GM-GROHE-23875000",
+      "name": "Mitigeur lavabo Grohe Eurosmart S",
+      "unitPriceChf": 118.4,
+      "aliases": ["grohe eurosmart", "mitigeur lavabo", "robinet lavabo grohe", "lavabo grohe"]
+    },
+    {
+      "supplier": "Sanitas Troesch",
+      "reference": "ST-SIPHON-114-CH",
+      "name": "Siphon lavabo chrome 1 1/4",
+      "unitPriceChf": 34.9,
+      "aliases": ["siphon lavabo", "siphon chrome", "siphon 1 1/4"]
+    },
+    {
+      "supplier": "Nussbaum",
+      "reference": "NB-FLEX-38-50",
+      "name": "Flexible inox 3/8 50 cm",
+      "unitPriceChf": 22.6,
+      "aliases": ["flexible inox", "flexible 3/8", "raccord flexible", "flexible lavabo"]
+    },
+    {
+      "supplier": "Nussbaum",
+      "reference": "NB-VANNE-12",
+      "name": "Vanne d'arret 1/2",
+      "unitPriceChf": 18.2,
+      "aliases": ["vanne d'arret", "robinet d'arret", "arret 1/2"]
+    }
+  ]
+}

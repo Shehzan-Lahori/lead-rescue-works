@@ -1,0 +1,65 @@
+{
+  "request": "Client a Lausanne: remplacement d'un robinet lavabo Grohe Eurosmart avec siphon lavabo, flexible inox 3/8 et cartouche thermostatique. Prevoir 2 heures de main d'oeuvre.\n",
+  "prototypeRule": "Fail closed: only exact reference/name/alias matches become quote lines. Unmatched products are flagged, not priced.",
+  "catalogNote": "Sample-only catalog for prototype validation. Not real supplier pricing.",
+  "assumptions": {
+    "materialMarginRate": 0.15,
+    "laborRateChf": 95,
+    "laborHours": 2,
+    "travelFeeChf": 45,
+    "vatRate": 0.081
+  },
+  "matchedCatalogLines": [
+    {
+      "supplier": "Getaz Miauton",
+      "reference": "GM-GROHE-23875000",
+      "name": "Mitigeur lavabo Grohe Eurosmart S",
+      "matchedAlias": "grohe eurosmart",
+      "quantity": 1,
+      "unitPriceChf": 118.4,
+      "materialSubtotalChf": 118.4,
+      "priceWithMarginChf": 136.16
+    },
+    {
+      "supplier": "Sanitas Troesch",
+      "reference": "ST-SIPHON-114-CH",
+      "name": "Siphon lavabo chrome 1 1/4",
+      "matchedAlias": "siphon lavabo",
+      "quantity": 1,
+      "unitPriceChf": 34.9,
+      "materialSubtotalChf": 34.9,
+      "priceWithMarginChf": 40.14
+    },
+    {
+      "supplier": "Nussbaum",
+      "reference": "NB-FLEX-38-50",
+      "name": "Flexible inox 3/8 50 cm",
+      "matchedAlias": "flexible inox",
+      "quantity": 1,
+      "unitPriceChf": 22.6,
+      "materialSubtotalChf": 22.6,
+      "priceWithMarginChf": 25.99
+    }
+  ],
+  "missingItems": [
+    "cartouche thermostatique"
+  ],
+  "totals": {
+    "materialSubtotalChf": 175.9,
+    "materialWithMarginChf": 202.29,
+    "laborChf": 190,
+    "travelChf": 45,
+    "preVatChf": 437.29,
+    "vatChf": 35.42,
+    "totalChf": 472.71
+  },
+  "n8nWorkflowShape": [
+    "Webhook/Form Trigger",
+    "Normalize French request",
+    "Catalog lookup by exact reference/name/approved aliases",
+    "IF all products matched -> quote calculation",
+    "IF missing products -> human review queue",
+    "HTML/PDF quote generation",
+    "Email or CRM handoff with audit log"
+  ]
+}
